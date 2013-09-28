@@ -46,3 +46,8 @@
 (defn recalls-by-time []
   (group-by :manufacturer (db/get-all-recalls)))
 
+(defn graph-recalls []
+  (let [year-recalls (dataset [:recDate :manufacturer :hazard] (map #(vector (:recDate %) (:manufacturer %) (:hazard %)) (db/get-manufacturer-causes)))
+        recalls-per-manufacturer ($rollup :count :recDate :manufacturer year-recalls)
+        ]
+    (view ($order [:recDate] :desc recalls-per-manufacturer))))

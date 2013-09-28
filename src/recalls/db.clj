@@ -46,6 +46,16 @@
     ;(limit 10)
     ))
 
+(defn get-manufacturer-causes []
+  (with-collection "recalls"
+    (find {})
+    (fields [:recDate :manufacturer :hazard])
+    ;; it is VERY IMPORTANT to use array maps with sort
+    (sort (array-map :recDate -1))
+    ;(limit 10)
+    ))
+
+
 (defn clear-db! []
   (mc/remove "recalls"))
 
