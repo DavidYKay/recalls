@@ -1,7 +1,10 @@
 (ns recalls.db
+  (:refer-clojure :exclude [sort find])
   (:require [monger.core :as mg]
+            [monger.joda-time]
             [monger.collection :as mc])
-  (:use [monger.conversion :only [from-db-object]])
+  (:use [monger.query]
+        [monger.conversion :only [from-db-object]])
   (:import [com.mongodb MongoOptions ServerAddress]
            [org.bson.types ObjectId]))
 
@@ -33,6 +36,19 @@
 
 (defn get-all-recalls []
   (mc/find-maps "recalls"))
+
+(defn get-by-date []
+  (with-collection "recalls"
+    (find {})
+    (fields [:recDate])
+    ;; it is VERY IMPORTANT to use array maps with sort
+    (sort (array-map :recDate -1))
+    ;(limit 10)
+    ))
+
+
+(defn clear-db! []
+  (mc/remove "recalls"))
 
 (defn save-recall! [recall]
   (if (nil? recall)

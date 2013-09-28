@@ -7,4 +7,5 @@
                  [org.clojure/clojure "1.5.1"]
                  [org.clojure/data.xml "0.0.7"]
                  [com.novemberain/monger "1.5.0"]
+                 [clj-time "0.6.0"]
                  ])
